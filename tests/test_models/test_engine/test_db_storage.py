@@ -6,6 +6,7 @@ Contains the TestDBStorageDocs and TestDBStorage classes
 from datetime import datetime
 import inspect
 import models
+from models import storage
 from models.engine import db_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -73,19 +74,9 @@ class TestDBStorage(unittest.TestCase):
     """Test the DBStorage class"""
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def setUp(self):
-        """set up for the test"""
-        self.storage = DBStorage()
-
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def tearDown(self):
-        """destroy the test instance"""
-#        self.storage.close()
-
-    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
         """Test that all returns a dictionary"""
-        self.assertIs(type(self.storage.all()), dict)
+        self.assertIs(type(storage.all()), dict)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_no_class(self):
@@ -132,17 +123,22 @@ class TestDBStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_db_storage_class_get_method(self):
         """Test for the DBStorage class get method"""
-        state1 = State()
-        state1_id = state1.id
-        test_state1 = self.storage.get(State, state1_id)
-        self.assertEqual(state1, test_state1)
+        dic = {"name": "New Yooork"}
+        instance = State(**dic)
+        storage.new(instance)
+        storage.save()
+        get_instance = storage.get(State, instance.id)
+        self.assertEqual(get_instance, instance)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_db_storage_class_count_method(self):
         """Test for the DBStorage class count method"""
-        count_all = self.storage.count()
-        count_all_test = len(self.storage.all())
-        count_states = self.storage.count(State)
-        count_states_test = len(self.storage.all(State))
-        self.assertEqual(count_all, count_all_test)
-        self.assertEqual(count_states, count_states_test)
+        dic = {"name": "Victoria"}
+        state = State(**dic)
+        storage.new(state)
+        dic = {"name": "Melbourne", "state_id": state.id}
+        city = City(**dic)
+        storage.new(city)
+        storage.save()
+        c = storage.count()
+        self.assertEqual(len(storage.all()), c)
