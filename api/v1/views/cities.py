@@ -12,7 +12,8 @@ from models.state import State
 from models.user import User
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+@app_views.route(
+    '/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
 def get_all_cities_by_state(state_id):
     """ Retrieves the list of all City objects belonging to a state """
     state_to_match = storage.get(State, state_id)
@@ -48,7 +49,8 @@ def delete_city_by_id(city_id):
     return jsonify({}), 200
 
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
+@app_views.route(
+    '/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
 def create_city(state_id):
     """ Creates a city """
     reference_state = storage.get(State, state_id)
