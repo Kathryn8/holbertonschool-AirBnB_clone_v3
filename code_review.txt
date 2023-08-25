@@ -1,0 +1,5 @@
+This is a code review for Kathryn Kelly
+
+code_review.txt
+
+Merge the branch storage_get_count into the master branch. This branch contains the methods get and count for each storage type and tests for the new methods.
