@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """ Create an instance of Blueprint """
 from flask import Blueprint
 
