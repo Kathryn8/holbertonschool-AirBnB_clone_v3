@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """A script that starts a Flask web application"""
 from flask import Flask
+from flask import jsonify
 from models import storage
 from api.v1.views import app_views
 from os import environ
@@ -13,6 +14,12 @@ app.register_blueprint(app_views)
 def teardown_db(exception):
     """ remove the current SQLAlchemy Session"""
     storage.close()
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return jsonify({"error": "Not found"})
+
 
 if __name__ == "__main__":
     HBNB_API_HOST = environ.get('HBNB_API_HOST', '0.0.0.0')
