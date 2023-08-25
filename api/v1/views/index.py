@@ -1,4 +1,4 @@
-#!/urs/bin/python3
+#!/usr/bin/python3
 """ Returns the status of API """
 from api.v1.views import app_views
 from flask import jsonify
